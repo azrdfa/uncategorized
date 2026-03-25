@@ -1,0 +1,1 @@
+javac collections/interfaces/*.java collections/implementations/*.java collections/tests/stress/*.java collections/tests/unit/*.java
