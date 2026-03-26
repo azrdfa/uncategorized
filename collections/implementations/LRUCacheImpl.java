@@ -9,7 +9,7 @@ public class LRUCacheImpl<V> implements LRUCache<V> {
 
     private int         size;
 
-    private HashMap     hashMap;
+    private HashMap<Node<Integer, V>>     hashMap;
 
     private Node<Integer, V>        head;
     private Node<Integer, V>        tail;
@@ -17,7 +17,7 @@ public class LRUCacheImpl<V> implements LRUCache<V> {
     public LRUCacheImpl(int size) {
 
         this.size = size;
-        this.hashMap = new HashMapImpl();
+        this.hashMap = new HashMapImpl<>();
 
         this.head = new Node<>();
         this.tail = new Node<>();
@@ -67,7 +67,29 @@ public class LRUCacheImpl<V> implements LRUCache<V> {
 
     @Override
     public V get(int key) {
-        return null;
+        
+        Node<Integer, V> node = this.hashMap.get(key);
+
+        if (node == null) {
+            return null;
+        }
+
+        Node<Integer, V> prev = node.getPrev();
+        Node<Integer, V> next = node.getNext();
+
+        prev.setNext(next);
+        next.setPrev(prev);
+
+        Node<Integer, V> headNext = head.getNext();
+
+        head.setNext(node);
+        headNext.setPrev(node);
+
+        node.setPrev(head);
+        node.setNext(headNext);
+
+        return node.getVal();
+
     }
 
     @Override
