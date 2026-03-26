@@ -1,10 +1,10 @@
 package collections.interfaces;
 
-public interface HashMap {
+public interface HashMap<T> {
 
-    void put(int key, String val);
+    void put(int key, T val);
 
-    String get(int key);
+    T get(int key);
 
     void remove(int key);
 

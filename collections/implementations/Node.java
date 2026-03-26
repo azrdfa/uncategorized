@@ -1,30 +1,30 @@
 package collections.implementations;
 
-public class Node {
+public class Node<K, V> {
 
-    int key;
-    String val;
+    K key;
+    V val;
     Node prev;
     Node next;
 
-    public Node(int key, String val) {
+    public Node(K key, V val) {
         this.key = key;
         this.val = val;
     }
 
-    public int getKey() {
+    public K getKey() {
         return this.key;
     }
 
-    public void setKey(int key) {
+    public void setKey(K key) {
         this.key = key;
     }
 
-    public String getVal() {
+    public V getVal() {
         return this.val;
     }
 
-    public void setVal(String val) {
+    public void setVal(V val) {
         this.val = val;
     }
 

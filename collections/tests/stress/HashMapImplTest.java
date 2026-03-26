@@ -15,7 +15,7 @@ public class HashMapImplTest {
 
     private static void execute(int sampleSize) {
 
-        HashMapImpl hashMap = new HashMapImpl();
+        HashMapImpl<String> hashMap = new HashMapImpl<>();
 
         long start = System.nanoTime();
         for (int i = 0; i < sampleSize; i++) {

@@ -3,39 +3,39 @@ package collections.implementations;
 import collections.interfaces.HashMap;
 import collections.implementations.Node;
 
-public class HashMapImpl implements HashMap {
+public class HashMapImpl<T> implements HashMap<T> {
 
     private int         bucket_size = 16;
     private double      LOAD_TRESHOLD = 0.75;
 
-    private Node[]      buckets;
+    private Node<Integer, T>[]      buckets;
 
     public HashMapImpl() {
         this.buckets = new Node[bucket_size];
     }
 
     @Override
-    public void put(int key, String val) {
+    public void put(int key, T val) {
 
         if ((double) size()/buckets.length >= LOAD_TRESHOLD) {
             resize();
         }
         
         int idx = hash(key);
-        Node node = this.buckets[idx];
+        Node<Integer, T> node = this.buckets[idx];
 
         if (node == null) {
-            this.buckets[idx] = new Node(key, val);
+            this.buckets[idx] = new Node<>(key, val);
             return;
         }
 
-        Node curr = node;
+        Node<Integer, T> curr = node;
 
         while (curr.next != null) {
             curr = curr.next;
         }
 
-        Node next = new Node(key, val);
+        Node<Integer, T> next = new Node<>(key, val);
 
         next.prev = curr;
         curr.next = next;
@@ -44,9 +44,9 @@ public class HashMapImpl implements HashMap {
     }
 
     @Override
-    public String get(int key) {
+    public T get(int key) {
         
-        Node node = getNode(key);
+        Node<Integer, T> node = getNode(key);
 
         if (node == null) return null;
 
@@ -58,13 +58,13 @@ public class HashMapImpl implements HashMap {
     public void remove(int key) {
         
         int idx = hash(key);
-        Node node = getNode(key);
+        Node<Integer, T> node = getNode(key);
 
         if (node == null) return;
 
         if (node.prev == null) {
 
-            Node next = node.next;
+            Node<Integer, T> next = node.next;
 
             if (next != null) {
                 next.prev = null;
@@ -76,15 +76,15 @@ public class HashMapImpl implements HashMap {
 
         } else if (node.next == null) {
 
-            Node prev = node.prev;
+            Node<Integer, T> prev = node.prev;
 
             prev.next = null;
             node.prev = null;
 
         } else {
 
-            Node prev = node.prev;
-            Node next = node.next;
+            Node<Integer, T> prev = node.prev;
+            Node<Integer, T> next = node.next;
 
             prev.next = next;
             next.prev = prev;
@@ -100,11 +100,11 @@ public class HashMapImpl implements HashMap {
 
         int size = 0;
 
-        for (Node node: this.buckets) {
+        for (Node<Integer, T> node: this.buckets) {
 
             if (node == null) continue;
 
-            Node curr = node;
+            Node<Integer, T> curr = node;
 
             while (curr != null) {
 
@@ -130,7 +130,7 @@ public class HashMapImpl implements HashMap {
 
         int bucketCount = 0;
         
-        for (Node node: this.buckets) {
+        for (Node<Integer, T> node: this.buckets) {
             if (node != null) bucketCount++;
         }
         
@@ -141,7 +141,7 @@ public class HashMapImpl implements HashMap {
 
         int emptyBucketCount = 0;
         
-        for (Node node: this.buckets) {
+        for (Node<Integer, T> node: this.buckets) {
             if (node == null) emptyBucketCount++;
         }
         
@@ -152,13 +152,13 @@ public class HashMapImpl implements HashMap {
         
         int maxBucketSize = 0;
 
-        for (Node node: this.buckets) {
+        for (Node<Integer, T> node: this.buckets) {
 
             int count = 0;
 
             if (node != null) {
 
-                Node curr = node;
+                Node<Integer, T> curr = node;
 
                 while (curr != null) {
                     count++;
@@ -177,10 +177,10 @@ public class HashMapImpl implements HashMap {
         return key % bucket_size;
     }
 
-    private Node getNode(int key) {
+    private Node<Integer, T> getNode(int key) {
 
         int idx = hash(key);
-        Node node = this.buckets[idx];
+        Node<Integer, T> node = this.buckets[idx];
 
         if (node == null) return null;
 
@@ -188,7 +188,7 @@ public class HashMapImpl implements HashMap {
             return node;
         }
 
-        Node curr = node.next;
+        Node<Integer, T> curr = node.next;
 
         while (curr != null) {
 
@@ -208,13 +208,13 @@ public class HashMapImpl implements HashMap {
 
         bucket_size *= 2;
 
-        Node[] newBuckets = new Node[bucket_size];
+        Node<Integer, T>[] newBuckets = new Node[bucket_size];
 
-        for (Node node: this.buckets) {
+        for (Node<Integer, T> node: this.buckets) {
 
             if (node == null) continue;
 
-            Node curr = node;
+            Node<Integer, T> curr = node;
 
             while (curr != null) {
 
@@ -223,7 +223,7 @@ public class HashMapImpl implements HashMap {
 
                 int idx = hash(curr.getKey());
 
-                Node newNode = newBuckets[idx];
+                Node<Integer, T> newNode = newBuckets[idx];
 
                 if (newNode == null) {
 
@@ -233,13 +233,13 @@ public class HashMapImpl implements HashMap {
                     continue;
                 }
 
-                Node newCurr = newNode;
+                Node<Integer, T> newCurr = newNode;
 
                 while (newCurr.next != null) {
                     newCurr = newCurr.next;
                 }
 
-                Node newNext = curr;
+                Node<Integer, T> newNext = curr;
 
                 newNext.prev = newCurr;
                 newCurr.next = newNext;

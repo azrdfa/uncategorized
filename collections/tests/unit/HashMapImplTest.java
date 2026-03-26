@@ -39,7 +39,7 @@ public class HashMapImplTest {
 
     private static boolean put_get_success() {
 
-        HashMapImpl hashMap = new HashMapImpl();
+        HashMapImpl<String> hashMap = new HashMapImpl<>();
 
         hashMap.put(1, "one");
 
@@ -52,7 +52,7 @@ public class HashMapImplTest {
 
     private static boolean put_get_success_on_collision() {
 
-        HashMapImpl hashMap = new HashMapImpl();
+        HashMapImpl<String> hashMap = new HashMapImpl<>();
 
         hashMap.put(1, "one");
         hashMap.put(17, "seventeen");
@@ -66,7 +66,7 @@ public class HashMapImplTest {
 
     private static boolean remove_success() {
 
-        HashMapImpl hashMap = new HashMapImpl();
+        HashMapImpl<String> hashMap = new HashMapImpl<>();
 
         hashMap.put(1, "one");
         hashMap.remove(1);
@@ -80,7 +80,7 @@ public class HashMapImplTest {
 
     private static boolean remove_success_on_collision() {
 
-        HashMapImpl hashMap = new HashMapImpl();
+        HashMapImpl<String> hashMap = new HashMapImpl<>();
 
         hashMap.put(1, "one");
         hashMap.put(17, "seventeen");
@@ -96,7 +96,7 @@ public class HashMapImplTest {
 
     private static boolean remove_success_on_collision_head() {
 
-        HashMapImpl hashMap = new HashMapImpl();
+        HashMapImpl<String> hashMap = new HashMapImpl<>();
 
         hashMap.put(1, "one");
         hashMap.put(17, "seventeen");
@@ -112,7 +112,7 @@ public class HashMapImplTest {
 
     private static boolean remove_success_on_collision_tail() {
 
-        HashMapImpl hashMap = new HashMapImpl();
+        HashMapImpl<String> hashMap = new HashMapImpl<>();
 
         hashMap.put(1, "one");
         hashMap.put(17, "seventeen");
@@ -128,7 +128,7 @@ public class HashMapImplTest {
 
     private static boolean put_success_on_resize() {
 
-        HashMapImpl hashMap = new HashMapImpl();
+        HashMapImpl<String> hashMap = new HashMapImpl<>();
 
         for (int i = 0; i < 13; i++) {
             hashMap.put(i, String.valueOf(i));
