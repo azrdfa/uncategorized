@@ -7,6 +7,8 @@ public class Node<K, V> {
     Node prev;
     Node next;
 
+    public Node() {}
+
     public Node(K key, V val) {
         this.key = key;
         this.val = val;

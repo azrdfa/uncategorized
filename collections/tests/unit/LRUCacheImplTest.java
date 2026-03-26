@@ -26,10 +26,10 @@ public class LRUCacheImplTest {
             failingTest.append("\t\t- put_returnTrue_onEmptyCache_andNodeInstertedToHead\n");
         }
 
-        if (put_returnTrue_onFilledCache_andNodeMovedToHead()) {
+        if (put_returnTrue_onFilledCache_andNodeInsertedToHead()) {
             successCount++;
         } else {
-            failingTest.append("\t\t- put_returnTrue_onFilledCache_andNodeMovedToHead\n");
+            failingTest.append("\t\t- put_returnTrue_onFilledCache_andNodeInsertedToHead\n");
         }
 
         if (put_returnTrue_onFullCache_andLeastElemEvicted()) {
@@ -80,23 +80,23 @@ public class LRUCacheImplTest {
 
     private static boolean put_returnTrue_onEmptyCache_andNodeInstertedToHead() {
         
-        LRUCache cache = new LRUCacheImpl(CACHE_DEFAULT_SIZE);
+        LRUCache<String> cache = new LRUCacheImpl<>(CACHE_DEFAULT_SIZE);
 
         boolean isPutSuccess = cache.put(0, "zero");
-        boolean isNodeOnHead = cache.getHead() != null ? "zero".equals(cache.getHead().getKey()) :  false;
+        boolean isNodeOnHead = cache.getHead() != null ? 0 == cache.getHead().getKey() :  false;
 
         return isPutSuccess && isNodeOnHead;
 
     }
 
-    private static boolean put_returnTrue_onFilledCache_andNodeMovedToHead() {
+    private static boolean put_returnTrue_onFilledCache_andNodeInsertedToHead() {
         
-        LRUCache cache = new LRUCacheImpl(CACHE_DEFAULT_SIZE);
+        LRUCache<String> cache = new LRUCacheImpl<>(CACHE_DEFAULT_SIZE);
 
         cache.put(0, "zero");
 
         boolean isPutSuccess = cache.put(1, "one");
-        boolean isNodeOnHead = cache.getHead() != null ? "one".equals(cache.getHead().getKey()) :  false;
+        boolean isNodeOnHead = cache.getHead() != null ? 1 == cache.getHead().getKey() :  false;
 
         return isPutSuccess && isNodeOnHead;
 
@@ -104,22 +104,22 @@ public class LRUCacheImplTest {
 
     private static boolean put_returnTrue_onFullCache_andLeastElemEvicted() {
         
-        LRUCache cache = new LRUCacheImpl(CACHE_DEFAULT_SIZE);
+        LRUCache<String> cache = new LRUCacheImpl<>(CACHE_DEFAULT_SIZE);
 
         cache.put(0, "zero");
         cache.put(1, "one");
         cache.put(2, "two");
 
         boolean isPutSuccess = cache.put(3, "three");
-        boolean isLeastElemEvicted = cache.get(0) == null;
+        boolean isEvictedElemFound = cache.find(0);
 
-        return isPutSuccess && isLeastElemEvicted;
+        return isPutSuccess && !isEvictedElemFound;
 
     }
 
     private static boolean get_returnNull_onEmptyCache() {
         
-        LRUCache cache = new LRUCacheImpl(CACHE_DEFAULT_SIZE);
+        LRUCache<String> cache = new LRUCacheImpl<>(CACHE_DEFAULT_SIZE);
 
         boolean isElemNull = cache.get(0) == null;
 
@@ -129,13 +129,13 @@ public class LRUCacheImplTest {
     
     private static boolean get_returnVal_onFilledCache_andNodeMovedToHead() {
         
-        LRUCache cache = new LRUCacheImpl(CACHE_DEFAULT_SIZE);
+        LRUCache<String> cache = new LRUCacheImpl<>(CACHE_DEFAULT_SIZE);
 
         cache.put(0, "zero");
         cache.put(1, "one");
 
         boolean isElemEqual = "one".equals(cache.get(1));
-        boolean isNodeOnHead = cache.getHead() != null ? "one".equals(cache.getHead().getKey()) :  false;
+        boolean isNodeOnHead = cache.getHead() != null ? 1 == cache.getHead().getKey() :  false;
 
         return isElemEqual && isNodeOnHead;
 
@@ -143,50 +143,53 @@ public class LRUCacheImplTest {
 
     private static boolean remove_returnFalse_onEmptyCache() {
         
-        LRUCache cache = new LRUCacheImpl(CACHE_DEFAULT_SIZE);
+        LRUCache<String> cache = new LRUCacheImpl<>(CACHE_DEFAULT_SIZE);
 
-        boolean isRemoveFailed = cache.remove(0) == false;
+        Boolean isRemoveSuccess = cache.remove(0);
 
-        return isRemoveFailed;
+        if (isRemoveSuccess == null) {
+            return false;
+        }
+
+        return !isRemoveSuccess;
 
     }
 
     private static boolean remove_returnFalse_onFilledCache_withNonExistentKey() {
         
-        LRUCache cache = new LRUCacheImpl(CACHE_DEFAULT_SIZE);
+        LRUCache<String> cache = new LRUCacheImpl<>(CACHE_DEFAULT_SIZE);
 
         cache.put(0, "zero");
         cache.put(1, "one");
 
-        boolean isRemoveFailed = cache.remove(2) == false;
+        Boolean isRemoveSuccess = cache.remove(2);
 
-        return isRemoveFailed;
+        if (isRemoveSuccess == null) {
+            return false;
+        }
+
+        return !isRemoveSuccess;
 
     }
 
     private static boolean remove_returnTrue_onFilledCache_andNodeRemoved() {
         
-        LRUCache cache = new LRUCacheImpl(CACHE_DEFAULT_SIZE);
+        LRUCache<String> cache = new LRUCacheImpl<>(CACHE_DEFAULT_SIZE);
 
         cache.put(0, "zero");
         cache.put(1, "one");
         cache.put(2, "two");
 
-        boolean isRemoveSuccess = cache.remove(1) == true;
+        Boolean isRemoveSuccess = cache.remove(1);
 
-        Node head = cache.getHead();
-        Node curr = head;
-
-        boolean isNodeFound = false;
-
-        while (curr != null) {
-
-            if (curr.getVal() == "one")  {
-                isNodeFound = true;
-            }
-
-            curr = curr.getNext();
+        if (isRemoveSuccess == null) {
+            return false;
         }
+
+        Node<Integer, String> head = cache.getHead();
+        Node<Integer, String> curr = head;
+
+        boolean isNodeFound = cache.find(1);
 
         return isRemoveSuccess && !isNodeFound;
 
