@@ -94,7 +94,23 @@ public class LRUCacheImpl<V> implements LRUCache<V> {
 
     @Override
     public Boolean remove(int key) {
-        return null;
+
+        Node<Integer, V> node = this.hashMap.get(key);
+
+        if (node == null) {
+            return false;
+        }
+
+        Node<Integer, V> prev = node.getPrev();
+        Node<Integer, V> next = node.getNext();
+
+        prev.setNext(next);
+        next.setPrev(prev);
+
+        hashMap.remove(key);
+
+        return true;
+
     }
 
     @Override
